@@ -113,7 +113,8 @@ hasTwoCitadels((N, E, S, V, X)) :- X > 1.
 % Rotation=1 și Rotation=3 vor fi identice.
 % La piesa 16, orice rotire trebuie să aibă aceeași reprezentare cu
 % reprezentarea inițială.
-ccw(_, _, _) :- false.
+ccw(T, 0, T).
+ccw((N, E, S, V, X), Y, R) :- Y > 0, Y1 is Y - 1, ccw((E, S, V, N, X), Y1, R).
 
 
 % rotations/2
