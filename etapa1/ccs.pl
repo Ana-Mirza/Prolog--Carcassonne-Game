@@ -85,7 +85,8 @@ at((N, E, S, V, X), w, V).
 % respectivă, pot fi doar o submulțime a acestora.
 % De exemplu, la piesa 14, predicatul este adevărat pentru entitatea d
 % și pentru oricare dintre listele [w], [e] sau [e,w].
-atL(_, _, _) :- false.
+atL(T, [], W).
+atL(T, [D|R], W) :- at(T, D, W), atL(T, R, W).
 
 
 % hasTwoCitadels/1
