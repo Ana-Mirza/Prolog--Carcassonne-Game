@@ -62,10 +62,10 @@ tile(16, (d, d, d, d, 0)).
 %
 % Dacă What nu este legat, trebuie legat la entitatea care se află pe
 % muchia din direcția Dir.
-at((N, E, S, V, N), n, N).
-at((N, E, S, V, N), e, E).
-at((N, E, S, V, N), s, X).
-at((N, E, S, V, N), v, V).
+at((N, E, S, V, X), n, N).
+at((N, E, S, V, X), e, E).
+at((N, E, S, V, X), s, S).
+at((N, E, S, V, X), w, V).
 
 
 % atL/3
