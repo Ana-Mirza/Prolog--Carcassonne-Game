@@ -94,7 +94,7 @@ atL(T, [D|R], W) :- at(T, D, W), atL(T, R, W).
 %
 % Predicatul întoarce adevărat dacă pe piesă există două cetăți diferite
 % (ca în piesele 4 și 5).
-hasTwoCitadels(_) :- false.
+hasTwoCitadels((N, E, S, V, X)) :- X > 1.
 
 
 % ccw/3
