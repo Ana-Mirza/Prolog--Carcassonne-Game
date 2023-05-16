@@ -134,10 +134,10 @@ ccw((N, E, S, V, X), Y, R) :- Y > 0, Y1 is Y - 1, ccw((E, S, V, N, X), Y1, R).
 % piesa 16 rezultatul va conține o singură pereche.
 %
 % Folosiți recursivitate (nu meta-predicate).
-rotationsHelper(T, N, []) :- ccw(T, N, T).
-rotationsHelper(T, N, [H|L]) :- N < 4, ccw(T, N, H1), H = (N, H1), N1 is N + 1, rotationsHelper(T, N1, L).
+rotationsHelper(Tile, N, []) :- ccw(Tile, N, Tile).
+rotationsHelper(Tile, N, [H|T]) :- N < 4, ccw(Tile, N, H1), H = (N, H1), N1 is N + 1, rotationsHelper(Tile, N1, T).
 
-rotations(T, [H|R]) :- H = (0, T), rotationsHelper(T, 1, R).
+rotations(Tile, [H|T]) :- H = (0, Tile), rotationsHelper(Tile, 1, T).
 
 
 % match/3
@@ -154,7 +154,7 @@ rotations(T, [H|R]) :- H = (0, T), rotationsHelper(T, 1, R).
 % ccw(T8, 3, T8R), match(T8R, T10, w).
 %
 % Puteți folosi predicatul opposite/2 din utils.pl.
-match(_, _, _) :- false.
+match(Tile, NeighborTile, NeighborDirection) :- at(Tile, NeighborDirection, X), opposite(NeighborDirection, N1), at(NeighborTile, N1, X).
 
 
 % findRotation/3
