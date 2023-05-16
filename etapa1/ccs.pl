@@ -134,7 +134,10 @@ ccw((N, E, S, V, X), Y, R) :- Y > 0, Y1 is Y - 1, ccw((E, S, V, N, X), Y1, R).
 % piesa 16 rezultatul va conține o singură pereche.
 %
 % Folosiți recursivitate (nu meta-predicate).
-rotations(_, _) :- false.
+rotationsHelper(T, N, []) :- ccw(T, N, T).
+rotationsHelper(T, N, [H|L]) :- N < 4, ccw(T, N, H1), H = (N, H1), N1 is N + 1, rotationsHelper(T, N1, L).
+
+rotations(T, [H|R]) :- H = (0, T), rotationsHelper(T, 1, R).
 
 
 % match/3
