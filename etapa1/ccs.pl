@@ -180,7 +180,10 @@ match(Tile, NeighborTile, NeighborDirection) :- at(Tile, NeighborDirection, X), 
 % soluția de mai sus s-ar reduce doar la rotația 3.
 %
 % Hint: Prolog face backtracking automat. Folosiți match/3.
-findRotation(_, _, _) :- false.
+findRotationHelper(Tile, []).
+findRotationHelper(Tile, [(Neighbor, Direction)|T]) :- match(Tile, Neighbor, Direction), findRotationHelper(Tile, T).
+
+findRotation(Tile, Neighbors, Rotation) :- member(R, [0, 1, 2, 3]), ccw(Tile, R, T), findRotationHelper(T, Neighbors), Rotation = R.
 
 
 
