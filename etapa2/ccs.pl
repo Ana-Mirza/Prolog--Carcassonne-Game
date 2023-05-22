@@ -340,5 +340,4 @@ getAvailablePositions(Board, Positions) :-
 findPositionForTile([], Tile, (0, 0), 0).
 findPositionForTile(Board, Tile, Position, Rotation) :- 
     getAvailablePositions(Board, Positions),
-    member(Position1, Positions), rotations(Tile, RotationList), member((Rotation1, T), RotationList), canPlaceTile(Board, Position1, T), 
-    Position = Position1, Rotation = Rotation1.
+    member(Position, Positions), rotations(Tile, RotationList), member((Rotation, T), RotationList), canPlaceTile(Board, Position, T).
