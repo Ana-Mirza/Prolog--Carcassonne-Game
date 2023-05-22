@@ -249,7 +249,7 @@ boardSet(BoardIn, (X1, Y1), Tile, BoardOut) :-
 % poziția Pos. Poziția este dată ca un tuplu (X, Y).
 %
 % Dacă la poziția Pos nu este nicio piesă, predicatul eșuează.
-boardGet(emptyBoard, Pos, Tile) :- false.
+boardGet([], Pos, Tile) :- !, false.
 boardGet([(Tile, Pos)|Rest], Pos, Tile) :- !.
 boardGet([(Diff_tile, Dif_pos)|Rest], Pos, Tile) :- boardGet(Rest, Pos, Tile).
 
@@ -265,7 +265,12 @@ boardGet([(Diff_tile, Dif_pos)|Rest], Pos, Tile) :- boardGet(Rest, Pos, Tile).
 % Pentru o tablă goală, predicatul eșuează.
 %
 % Hint: max_list/2 și min_list/2
-boardGetLimits(_, _, _, _, _) :- false.
+boardGetLimits([], _, _, _, _) :- !, false.
+boardGetLimits(Board, XMin, YMin, XMax, YMax) :- 
+    maplist([(_, _, Y), Y]>>true, Board, ListOfY), max_list(ListOfY, YMax),
+    maplist([(_, _, Y2), Y2]>>true, Board, ListOfY2), min_list(ListOfY2, YMin),
+    maplist([(_, X, _), X]>>true, Board, ListOfX), max_list(ListOfX, XMax),
+    maplist([(_, X2, _), X2]>>true, Board, ListOfX2), min_list(ListOfX2, XMin).
 
 
 
@@ -283,7 +288,11 @@ boardGetLimits(_, _, _, _, _) :- false.
 % - piesa se potrivește cu toți vecinii deja existenți pe tablă.
 %
 % Hint: neighbor/3 și directions/1 , ambele din utils.pl
-canPlaceTile(_, _, _) :- false.
+canPlaceTile([], Pos, Tile) :- !.
+canPlaceTile(Board, Pos, Tile) :-
+    findall((Index, Dir), (member(Dir, [n, s, e, w]), neighbor(Pos, Dir, Index)), Neighbors), 
+    findall((T, NeighborDir), (member((NeighborIndex, NeighborDir), Neighbors), member((T, NeighborIndex), Board)), List), 
+    List \== [], findall(R, (findRotation(Tile, List, R)), Rotations), Rotations \== [].
 
 
 
@@ -300,7 +309,8 @@ canPlaceTile(_, _, _) :- false.
 % Hint: between/3 (predefinit) și neighbor/3 din utils.pl
 %
 % Atenție! Și în afara limitelor curente există poziții disponibile.
-getAvailablePositions(_, _) :- false.
+getAvailablePositions([], Positions) :- !, false.
+getAvailablePositions(Board, Positions) :- .
 
 
 
