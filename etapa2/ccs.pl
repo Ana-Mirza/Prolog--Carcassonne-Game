@@ -235,9 +235,7 @@ emptyBoard([]).
 %
 % Poziția este dată ca un tuplu (X, Y).
 boardSet([], Pos, Tile, [(Tile, Pos)]) :- !.
-boardSet(BoardIn, (X1, Y1), Tile, BoardOut) :- 
-    findall((T, X, Y), (member((T, X, Y), BoardIn), (X \== X1; Y \== Y1)), List), 
-    List \== [], BoardOut = [(Tile, (X1, Y1))|BoardIn].
+boardSet(BoardIn, Pos, Tile, BoardOut) :- canPlaceTile(BoardIn, Pos, Tile), BoardOut = [(Tile, Pos)|BoardIn].
 
 
 
@@ -251,7 +249,7 @@ boardSet(BoardIn, (X1, Y1), Tile, BoardOut) :-
 % Dacă la poziția Pos nu este nicio piesă, predicatul eșuează.
 boardGet([], Pos, Tile) :- !, false.
 boardGet([(Tile, Pos)|Rest], Pos, Tile) :- !.
-boardGet([(Diff_tile, Dif_pos)|Rest], Pos, Tile) :- boardGet(Rest, Pos, Tile).
+boardGet([(Dif_tile, Dif_pos)|Rest], Pos, Tile) :- boardGet(Rest, Pos, Tile).
 
 
 
@@ -290,9 +288,10 @@ boardGetLimits(Board, XMin, YMin, XMax, YMax) :-
 % Hint: neighbor/3 și directions/1 , ambele din utils.pl
 canPlaceTile([], Pos, Tile) :- !.
 canPlaceTile(Board, Pos, Tile) :-
+    findall(I, (member((T0, I), Board), Pos == I), L), L == [],
     findall((Index, Dir), (member(Dir, [n, s, e, w]), neighbor(Pos, Dir, Index)), Neighbors), 
-    findall((T, NeighborDir), (member((NeighborIndex, NeighborDir), Neighbors), member((T, NeighborIndex), Board)), List), 
-    List \== [], findall(R, (findRotation(Tile, List, R)), Rotations), Rotations \== [].
+    findall((T, NeighborDir), (member((NeighborIndex, NeighborDir), Neighbors), member((T, NeighborIndex), Board)), List), List \== [], 
+    forall(member((NeighborTile, NeighborDirection), List), match(Tile, NeighborTile, NeighborDirection)).
 
 
 
@@ -310,7 +309,7 @@ canPlaceTile(Board, Pos, Tile) :-
 %
 % Atenție! Și în afara limitelor curente există poziții disponibile.
 getAvailablePositions([], Positions) :- !, false.
-getAvailablePositions(Board, Positions) :- .
+getAvailablePositions(Board, Positions).
 
 
 
