@@ -151,7 +151,7 @@ rotationsHelper(Tile, N, [H|T]) :-
     H = (N, H1), N1 is N + 1, 
     rotationsHelper(Tile, N1, T).
 
-rotations(Tile, [H|T]) :- H = (0, Tile), rotationsHelper(Tile, 1, T).
+rotations(Tile, [H|T]) :- H = (0, Tile), rotationsHelper(Tile, 1, T), !.
 
 
 
@@ -337,10 +337,8 @@ getAvailablePositions(Board, Positions) :-
 %
 % În ieșirea de la teste, rezultatele vor fi asamblate ca
 % (X,Y):Rotation.
-findPositionForTile(_, _, _, _) :- false.
-
-
-
-
-
-
+findPositionForTile([], Tile, (0, 0), 0).
+findPositionForTile(Board, Tile, Position, Rotation) :- 
+    getAvailablePositions(Board, Positions),
+    member(Position1, Positions), rotations(Tile, RotationList), member((Rotation1, T), RotationList), canPlaceTile(Board, Position1, T), 
+    Position = Position1, Rotation = Rotation1.
