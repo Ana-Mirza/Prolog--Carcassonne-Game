@@ -308,14 +308,10 @@ canPlaceTile(Board, Pos, Tile) :-
 % Hint: between/3 (predefinit) și neighbor/3 din utils.pl
 %
 % Atenție! Și în afara limitelor curente există poziții disponibile.
-removeDuplicates([], []).
-removeDuplicates([H|T], [H1|T1]) :- \+ member(H, T), !, H1 = H, removeDuplicates(T, T1).
-removeDuplicates([H|T], List) :- removeDuplicates(T, List).
-
 getAvailablePositions([], Positions) :- !, false.
 getAvailablePositions(Board, Positions) :-
     findall(NIndex, (member((Tile, Index), Board), member(Dir, [n, s, e, w]), neighbor(Index, Dir, NIndex), \+ member((_, NIndex), Board)), List),
-    List \== [], removeDuplicates(List, Positions).
+    List \== [], sort(List, Positions).
 
 
 
